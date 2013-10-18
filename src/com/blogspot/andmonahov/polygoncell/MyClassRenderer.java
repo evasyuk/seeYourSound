@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 public class MyClassRenderer implements GLSurfaceView.Renderer {
     TextView text_info;
+    TexFont textFont;
     String infoString = "";
     boolean isTimeOk = false;
     double time0;
@@ -357,27 +358,38 @@ public class MyClassRenderer implements GLSurfaceView.Renderer {
 
     //метод, в котором выполняется рисование кадра
     public void onDrawFrame(GL10 gl) {
-        //передаем в шейдерный объект матрицу модели-вида-проекции
-        mShader.linkModelViewProjectionMatrix(modelViewProjectionMatrix);
-        //передаем в шейдерный объект координаты камеры
-        mShader.linkCamera(xСamera, yCamera, zCamera);
-        //передаем в шейдерный объект координаты источника света
-        mShader.linkLightSource(xLightPosition, yLightPosition, zLightPosition);
-        //вычисляем координаты вершин
-        getVertex();
-        //вычисляем координаты нормалей
-        getNormal();
-        //очищаем кадр
-        GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
-//        infoString = new String(""+0);
-//        text_info.setText(infoString);
+//        //передаем в шейдерный объект матрицу модели-вида-проекции
+//        mShader.linkModelViewProjectionMatrix(modelViewProjectionMatrix);
+//        //передаем в шейдерный объект координаты камеры
+//        mShader.linkCamera(xСamera, yCamera, zCamera);
+//        //передаем в шейдерный объект координаты источника света
+//        mShader.linkLightSource(xLightPosition, yLightPosition, zLightPosition);
+//        //вычисляем координаты вершин
+//        getVertex();
+//        //вычисляем координаты нормалей
+//        getNormal();
+//        //очищаем кадр
+//        GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
+////        infoString = new String(""+0);
+////        text_info.setText(infoString);
         //рисуем поверхность
         double timePrev = System.currentTimeMillis();
         GLES20.glDrawElements(GLES20.GL_TRIANGLE_STRIP, sizeindex,
                 GLES20.GL_UNSIGNED_SHORT, indexBuffer);
         double timeNow = System.currentTimeMillis();
-        infoString = new String(""+(timeNow-timePrev));
-        text_info.setText(infoString);
+//        infoString = new String(""+(timeNow-timePrev));
+//        text_info.setText(infoString);
+        if(textFont != null){
+            try{
+                textFont.PrintAt(gl, "OLOLO", (int)100,(int)100);
+
+            }catch(Exception e){
+                System.out.println(e.getMessage());
+            }
+        }else{
+            textFont = new TexFont(context, gl);
+        }
+
 
 
 
