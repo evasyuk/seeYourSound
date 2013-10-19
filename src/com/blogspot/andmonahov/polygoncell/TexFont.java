@@ -13,7 +13,7 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-package codehead.cbfg;
+package com.blogspot.andmonahov.polygoncell;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -26,7 +26,8 @@ import javax.microedition.khronos.opengles.GL11Ext;
 
 import android.content.res.AssetManager;
 import android.content.Context;
- 
+import android.opengl.GLES20;
+
 public class TexFont 
 {
 	Context mContext;
@@ -76,8 +77,8 @@ public class TexFont
 	public Boolean LoadFontAlt(String fontName, GL10 gl) throws IOException
 	{
 		int bytesRead;
-		
-		// Array for file header
+
+        // Array for file header
 		byte[] head = new byte[20];
 		
 		try
@@ -386,12 +387,13 @@ public class TexFont
 			// Update the crop rect
 			UVarray[0] = col*fntCellWidth;
 			UVarray[1] = fntTexHeight - (row*fntCellHeight);
-			
+
+            GLES20.glTexParameteriv(GL10.GL_TEXTURE_2D, GL11Ext.GL_TEXTURE_CROP_RECT_OES,UVarray,0);
 			// Set crop area
-			((GL11) gl).glTexParameteriv(GL10.GL_TEXTURE_2D, GL11Ext.GL_TEXTURE_CROP_RECT_OES,UVarray,0);
+//			((GL11) gl).glTexParameteriv(GL10.GL_TEXTURE_2D, GL11Ext.GL_TEXTURE_CROP_RECT_OES,UVarray,0);
 			// Draw texture
 			((GL11Ext) gl).glDrawTexfOES(xPos,(float)y,0.0f,cellWidth,cellHeight);
-			
+//            GLES20
 			// Add character width to offset for next glyph
 			xPos += (xScale * charWidth[glyph + firstCharOffset]);
 		}

@@ -37,6 +37,7 @@ public class MyClassSurfaceView extends GLSurfaceView {
 
         renderer.setCameraX(eventX);
         renderer.setCameraX(eventY);
+        renderer.changeMyView();
 
 //        switch (event.getAction()) {
 //            case MotionEvent.ACTION_DOWN:

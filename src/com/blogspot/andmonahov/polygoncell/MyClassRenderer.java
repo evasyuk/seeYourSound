@@ -16,11 +16,13 @@ import android.graphics.drawable.Drawable;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.os.SystemClock;
 import android.widget.TextView;
 
 public class MyClassRenderer implements GLSurfaceView.Renderer {
+    Button btn1;
     TextView text_info;
     TexFont textFont;
     String infoString = "";
@@ -203,8 +205,19 @@ public class MyClassRenderer implements GLSurfaceView.Renderer {
         //начальное заполнение буферов вершин и нормалей
         getVertex();
         getNormal();
+
+        btn1 = new Button(this);
+
     }//конец конструктора
 
+    public void changeMyView(){
+        Matrix.setIdentityM(modelMatrix, 0);
+        Matrix.setLookAtM(
+                viewMatrix, 0, xСamera, yCamera, zCamera, 0, 0, 0, 0, 1, 0);
+        // умножая матрицу вида на матрицу модели
+        // получаем матрицу модели-вида
+        Matrix.multiplyMM(modelViewMatrix, 0, viewMatrix, 0, modelMatrix, 0);
+    }
 
     // вспомогательная функция
     // возвращает порядковый номер вершины по известным j и i 
@@ -358,20 +371,20 @@ public class MyClassRenderer implements GLSurfaceView.Renderer {
 
     //метод, в котором выполняется рисование кадра
     public void onDrawFrame(GL10 gl) {
-//        //передаем в шейдерный объект матрицу модели-вида-проекции
-//        mShader.linkModelViewProjectionMatrix(modelViewProjectionMatrix);
-//        //передаем в шейдерный объект координаты камеры
-//        mShader.linkCamera(xСamera, yCamera, zCamera);
-//        //передаем в шейдерный объект координаты источника света
-//        mShader.linkLightSource(xLightPosition, yLightPosition, zLightPosition);
-//        //вычисляем координаты вершин
-//        getVertex();
-//        //вычисляем координаты нормалей
-//        getNormal();
-//        //очищаем кадр
-//        GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
-////        infoString = new String(""+0);
-////        text_info.setText(infoString);
+        //передаем в шейдерный объект матрицу модели-вида-проекции
+        mShader.linkModelViewProjectionMatrix(modelViewProjectionMatrix);
+        //передаем в шейдерный объект координаты камеры
+        mShader.linkCamera(xСamera, yCamera, zCamera);
+        //передаем в шейдерный объект координаты источника света
+        mShader.linkLightSource(xLightPosition, yLightPosition, zLightPosition);
+        //вычисляем координаты вершин
+        getVertex();
+        //вычисляем координаты нормалей
+        getNormal();
+        //очищаем кадр
+        GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
+//        infoString = new String(""+0);
+//        text_info.setText(infoString);
         //рисуем поверхность
         double timePrev = System.currentTimeMillis();
         GLES20.glDrawElements(GLES20.GL_TRIANGLE_STRIP, sizeindex,
@@ -390,10 +403,34 @@ public class MyClassRenderer implements GLSurfaceView.Renderer {
             textFont = new TexFont(context, gl);
         }
 
+        btn1.draw(modelViewProjectionMatrix);
 
 
 
     }//конец метода
+
+    public static void checkGlError(String glOperation) {
+        int error;
+        while ((error = GLES20.glGetError()) != GLES20.GL_NO_ERROR) {
+            throw new RuntimeException(glOperation + ": glError " + error);
+        }
+    }
+
+
+    public static int loadShader(int type, String shaderCode){
+
+        // create a vertex shader type (GLES20.GL_VERTEX_SHADER)
+        // or a fragment shader type (GLES20.GL_FRAGMENT_SHADER)
+        int shader = GLES20.glCreateShader(type);
+
+        // add the source code to the shader and compile it
+        GLES20.glShaderSource(shader, shaderCode);
+        GLES20.glCompileShader(shader);
+
+        return shader;
+    }
+
+
 
 //    public void textDrawer(GL10 gl){
 //        // Create an empty, mutable bitmap
