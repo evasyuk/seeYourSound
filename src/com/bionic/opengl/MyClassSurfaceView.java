@@ -1,30 +1,29 @@
-package com.blogspot.andmonahov.polygoncell;
-
+package com.bionic.opengl;
 
 import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.view.MotionEvent;
 import android.widget.TextView;
 
-//Опишем наш класс MyClassSurfaceView расширяющий GLSurfaceView
+//пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ MyClassSurfaceView пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ GLSurfaceView
 public class MyClassSurfaceView extends GLSurfaceView {
-    //создадим ссылку для хранения экземпляра нашего класса рендерера
+    //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     private MyClassRenderer renderer;
 
-    // конструктор
+    // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     public MyClassSurfaceView(Context context, TextView _tv) {
-        // вызовем конструктор родительского класса GLSurfaceView
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ GLSurfaceView
         super(context);
         setEGLContextClientVersion(2);
-        // создадим экземпляр нашего класса MyClassRenderer
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ MyClassRenderer
         renderer = new MyClassRenderer(context, _tv);
-        // запускаем рендерер
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         setRenderer(renderer);
-        // установим режим циклического запуска метода onDrawFrame
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ onDrawFrame
         setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
-        // при этом запускается отдельный поток
-        // в котором циклически вызывается метод onDrawFrame
-        // т.е. бесконечно происходит перерисовка кадров
+        // пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+        // пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ onDrawFrame
+        // пїЅ.пїЅ. пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
     }
     @Override
     public boolean onTouchEvent(MotionEvent event) {

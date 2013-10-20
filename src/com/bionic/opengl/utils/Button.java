@@ -1,4 +1,4 @@
-package com.blogspot.andmonahov.polygoncell;
+package com.bionic.opengl.utils;
 
 import android.opengl.GLES20;
 
@@ -6,6 +6,8 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
+
+import com.bionic.opengl.*;
 
 /**
  * Created by H@ppyKn1ght on 19.10.13.
