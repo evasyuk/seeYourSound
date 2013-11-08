@@ -1,27 +1,36 @@
 package com.bionic;
 
 import android.os.Bundle;
+import android.os.PowerManager;
+import android.os.PowerManager.WakeLock;
 import android.app.Activity;
+import android.content.Context;
 import android.view.WindowManager;
 import android.widget.TextView;
 import com.bionic.opengl.*;
 
 public class MainActivity extends Activity {
-    // �������� ������ �� ��������� ������ ������ MyClassSurfaceVi mGLSurfaceView;
     MyClassSurfaceView mGLSurfaceView;
-    // ������������� ����� onCreate
+    WakeLock mWakeLock;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);  // ������������� ������������� �����
-        TextView textView = new TextView(this); // TextView c ScrollView ��� ����������� ����������
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        PowerManager mPowerManager = (PowerManager)getSystemService(Context.POWER_SERVICE); 
+        mWakeLock = mPowerManager.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "UMSE PowerTest");
+        if(mWakeLock != null){
+        	mWakeLock.acquire();
+        }
+        		
+        TextView textView = new TextView(this);
 
-        //�������� ��������� ������ ������ MyClassSurfaceView
         mGLSurfaceView = new MyClassSurfaceView(this, textView);
-        //������� ��������� ������ ������ MyClassSurfaceView
+
         setContentView(mGLSurfaceView);
-        // �� ������ �������� ���������� ��� ��������� � OpenGl ES
     }
 
 
@@ -36,5 +45,13 @@ public class MainActivity extends Activity {
     protected void onResume() {
         super.onResume();
         mGLSurfaceView.onResume();
+    }
+    
+    @Override
+    protected void onDestroy(){
+    	if(mWakeLock != null){
+    		mWakeLock.release();
+    		mWakeLock = null;
+    	}
     }
 }
